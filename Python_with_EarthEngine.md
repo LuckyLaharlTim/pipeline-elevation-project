@@ -13,6 +13,8 @@
 - Remote Sensing Project might prefer to Drive
 - stored images will be used as ML model inputs
 
+[Using Earth Engine in Python Notebooks](https://github.com/giswqs/earthengine-py-notebooks/blob/master/Image/image_visualization.ipynb)
+
 ## Note on Javascript
 
 Should the view of Images be Difficult in Python, access the [Code Editor](code.earthengine.google.com/?project=pipeline-elevation-project) and perform data exploration in Javascript.<br>
