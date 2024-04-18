@@ -17,7 +17,7 @@
 
 ## Note on Javascript
 
-Should the view of Images be Difficult in Python, access the [Code Editor](code.earthengine.google.com/?project=pipeline-elevation-project) and perform data exploration in Javascript.<br>
+Should the view of Images be Difficult in Python, access the [Code Editor](code.earthengine.google.com/?project=pipeline-elevation-project) or [here](https://code.earthengine.google.com/?accept_repo=users/timoliver200/satellite_data) (for the first time) and perform data exploration in Javascript.<br>
 ***Actual public maps will use exported data clipped to the extent of our Area(s) of Interest***
 
 ## Earth Engine Data Catalog Resources
