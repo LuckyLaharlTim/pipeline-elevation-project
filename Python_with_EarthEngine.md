@@ -25,4 +25,4 @@ Should the view of Images be Difficult in Python, access the [Code Editor](code.
 
 [Aerial Imagery Catalog](https://developers.google.com/earth-engine/datasets/tags/highres)
 
-[LandSat Catalog (expect LandSat 9 Raw Images](https://developers.google.com/earth-engine/datasets/catalog/LANDSAT_LC09_C02_T1)
+[LandSat Catalog (expect LandSat 9 Raw Images)](https://developers.google.com/earth-engine/datasets/catalog/LANDSAT_LC09_C02_T1)
