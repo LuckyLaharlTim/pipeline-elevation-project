@@ -1,0 +1,14 @@
+Remote Sensing (RS), Cloud Computing (CC)
+
+1) work on obtaining clipped data images of Texas (RS,CC)
+2) export images to 
+	a.	Cloud Storage (CC)
+	b.	Drive (RS, if necessary)
+3) Develop an elevation prediction Deep Learning model (RS)
+4) Make a cloud function/workflow out of #3 Python script(s) (CC)
+5) Report/Visualize model accuracy (RS)
+6) Make maps of predictions (CC, RS as needed)
+	a.	Convert likely Raster pixel assignments to vector features
+	b.	Combine with joined pipeline info (operator, etc.)
+	c.	Combine with derived pipeline info (shape length, etc.)
+	d.	Make maps
