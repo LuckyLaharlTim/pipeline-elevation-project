@@ -20,6 +20,8 @@
 Should the view of Images be Difficult in Python, access the [Code Editor](code.earthengine.google.com/?project=pipeline-elevation-project) or [here](https://code.earthengine.google.com/?accept_repo=users/timoliver200/satellite_data) (for the first time) and perform data exploration in Javascript.<br>
 ***Actual public maps will use exported data clipped to the extent of our Area(s) of Interest***
 
+[Here's a Land Cover Classification in Javascript](https://code.earthengine.google.com/65668786fe20ae3164cba6151592143c) if you wanted to get a single dataset for mapping quickly.
+
 ## Earth Engine Data Catalog Resources
 [USGS 3DEP 10m National Map Seamless Data (can also ingest 1 m)](https://developers.google.com/earth-engine/datasets/catalog/USGS_3DEP_10m)
 
