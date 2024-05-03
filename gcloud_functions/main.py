@@ -14,6 +14,19 @@ import os
 import skimage
 import functions_framework as ff
 
+WHEREAMI = True
+
+def mapImg(img,lon,lat):
+    Map = folium.Map()
+    Map.setOptions()
+
+    Map.setCenter(lon,lat) # coordinates of poi
+    # Map.addLayer(tx, {'color': '#FECA1E', 'fillColor': '#4c4cff'})
+    Map.addLayer(img, {}, 'default color composite')
+
+    Map.setControlVisibility()
+    return Map
+
 
 @ff.http
 def main(request):
@@ -24,30 +37,76 @@ def main(request):
     except:
         ee.Initialize(project="pipeline-elevation-project")
 
-    lstColl = ee.ImageCollection("LANDSAT/LC09/C02/T1")
-    i_date = '2022-05-01'
-    f_date = '2022-06-30'
-    lst = lstColl.select('B1','B2','B3','B4').filterDate(i_date,f_date)
-
-    img = lst.toList(10).get(1)
 
     zipPath = "~/Downloads/"
     ngPipePath = zipPath+"TX_NGPipe/NaturalGas_Pipelines_TX.shp"
     ngPipes = gpd.read_file(ngPipePath)
     MercNGPipes = ngPipes.to_crs(epsg=4326)
-    MercNGPipes["centroids"] = MercNGPipes.geometry.centroid
-    MercNGPipes["beg"] = MercNGPipes.geometry.boundary.centroid
+    MercNGPipes["centroids"] = MercNGPipes.geometry.centroid.to_crs(epsg=4326)
+    MercNGPipes["beg"] = MercNGPipes.geometry.boundary.centroid.to_crs(epsg=4326)
 
-    i = 2500
-    lat1 = MercNGPipes.centroids[i:i+1].squeeze().y
-    lon1 = MercNGPipes.centroids[i:i+1].squeeze().x
-    bbox = MercNGPipes.geometry[i:i+1].squeeze().boundary # attempt
 
-    task = ee.batch.Export.image.toCloudStorage(ee.Image(img),
-                                description="testLandSatExport",  
-                                bucket = "test_export_bucket0"  
-                                )
-    task.start()
+    metersPerUnit = (1.11/0.00001)
+    FHmeters = 500/metersPerUnit
+    aerColl = ee.ImageCollection("USDA/NAIP/DOQQ")
+    orthColl = ee.ImageCollection("SKYSAT/GEN-A/PUBLIC/ORTHO/RGB")
+    i_date = '2022-05-01'
+    f_date = '2022-06-30'
+    tx = ee.Geometry.Rectangle(-106.64719063660635,25.840437651866516,-93.5175532104321,36.50050935248352)
+
+
+    for i in range(len(MercNGPipes)):
+
+        if WHEREAMI:
+            print(i)
+            
+        # using new shapefile, so more 
+        lat = MercNGPipes.centroids[i:i+1].squeeze().y
+        lon = MercNGPipes.centroids[i:i+1].squeeze().x
+        # bbox args: west, south, east, north
+        bbox = ee.Geometry.BBox(lon-FHmeters,lat-FHmeters,lon+FHmeters,lat+FHmeters)
+
+        # get image(s) within box
+        aList = aerColl.select('R','G','B','N').filterDate(i_date,f_date).filterBounds(bbox)
+        oList = orthColl.select('R','G','B').filterDate(i_date,f_date).filterBounds(bbox)
+        ## need to check if list is empty
+        ## use .filterBounds(tx) if later issues
+
+        aImg = ee.Image(aList.toList(100).get(1))
+        try:
+            mapImg(aImg,lon,lat)
+            ## Export section
+            task = ee.batch.Export.image.toCloudStorage(aImg,
+                                    description=f"USDA_aerials/pipeline{i}",  # put part of pipeline here too
+                                    # ^ put desired name for the task & file in cloud storage
+                                    bucket = "gee_image_exports",  # should be gee_image_exports
+                                    region=bbox,  # I wonder if filtering by box first works too
+                                    #maxPixels=1500000000  
+                                    )
+            task.start()
+            ##### to view proper map
+            print(f"Aerial Ag {i}")
+            
+        except:
+            pass
+
+        oImg = ee.Image(oList.toList(100).get(1))
+        try:
+            mapImg(oImg,lon,lat)
+            ## Export section
+            task = ee.batch.Export.image.toCloudStorage(oImg,
+                                    description=f"SKYSAT_ortho/pipeline{i}",  # put part of pipeline here too
+                                    # ^ put desired name for the task & file in cloud storage
+                                    bucket = "gee_image_exports",  # should be gee_image_exports
+                                    region=bbox,  # I wonder if filtering by box first works too
+                                    #maxPixels=1500000000  
+                                    )
+            task.start()
+            ##### to view proper map
+            print(f"Aerial Orthro {i}")
+            continue
+        except:
+            pass
 
     if __name__=="__main__":
         main("sample")

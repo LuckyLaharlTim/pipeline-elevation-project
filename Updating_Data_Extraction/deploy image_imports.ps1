@@ -1,0 +1,11 @@
+gcloud functions deploy image_imports
+--gen2`
+--region=us-central1`
+--runtime=python311`
+--source=`
+--entry-point=main`
+--service-account=""`
+--timeout=3600s`
+--memory=256Mi`
+--no-allow-unauthenticated`
+--trigger-http
