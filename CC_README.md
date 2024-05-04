@@ -1,3 +1,10 @@
+# <ins>Transportation Pipeline Elevation Predictor</ins>
+
+This project aims to use satellite images in Google Earth Engine as input for a built neural network model identifying natural gas & CO2 pipelines as above or below ground. Given the desire to retrieve values for a large area and concern of finer resolution, satellite images are chosen over aerial photography and detail a maximum of 1 square kilometer. The workflow for retrieving images and obtaining estimates from the model will be put into a Google Cloud workflow with data appended to the initial line feature shapefiles.
+
+---------------------------
+
+## Methodology - Overview
 1. **<ins>Create a python cloud function (image_imports) that does the following</ins>**:
    1. *Import shapefile of Texas pipline locations.*
         - preferably from Cloud Storage 
@@ -14,3 +21,8 @@
 5. **<ins>Output binary prediction & model test accuracy details as respective</ins>**...
    1. enhanced shapefile
    2. auto-formatted documentation of model evaluation
+
+----------------------------
+
+Input: Zip Folder of pipline shapefile
+<br>Output: Zip folder of pipeline shapefile with added `Aboveground` column
