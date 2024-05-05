@@ -57,6 +57,11 @@ def getGJN():
     if not(os.path.exists(destFile)):
         os.makedirs("./data/",exist_ok=True)
 
+    # for non-personal machines (get key)
+    # storage_client = storage.Client.from_service_account_json(r"C:\Users\toliv\Downloads\pipeline-elevation-project-cf69729f47df.json")
+    # blob = storage_client.bucket(
+    #     "pipeline_data_bucket").blob("raw/pl_segments.geojson")
+    # for normal use, and in gcloud function
     blob = storage.Client(
         project="pipeline-elevation-project").bucket(
         "pipeline_data_bucket").blob("raw/pl_segments.geojson")
