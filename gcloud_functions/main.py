@@ -180,4 +180,4 @@ def main(request):
 
 
 if __name__ == "__main__":
-    main("sample")
+    print(main("sample"))
