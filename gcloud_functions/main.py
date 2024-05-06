@@ -74,6 +74,7 @@ def findPiece(id, subset):
 
 @ff.http
 def main(request):
+
     try:
         # should be a one-time run
         ee.Authenticate()
@@ -99,8 +100,17 @@ def main(request):
     # TX rectangle bounds
     # tx = ee.Geometry.Rectangle(-106.64719063660635,25.840437651866516,-93.5175532104321,36.50050935248352)
 
+    try:
+        index = int(request.args.get("index"))-1
+        batch = 1000
+        if index >= len(MercNGPipes):
+            print("Index argument too large, returning last batch of images.")
+            index = len(MercNGPipes)-batch
+    except Exception:
+        index = 0
+        batch = len(MercNGPipes)
 
-    for i in range(len(MercNGPipes)):
+    for i in range(index,index+batch):
             
         # using new shapefile, so more 
         lat = MercNGPipes.centroids[i:i+1].squeeze().y
