@@ -121,11 +121,11 @@ def main(request):
         # get pipeline_id if from geojson
         descAdd = ""
         '''UNCOMMENT ONCE PREPPED'''
-        # if not(ZIP):
-        #     descAdd = str(MercNGPipes.pipeline_id[i:i+1].squeeze())+"-"+str(findPiece(
-        #         id = MercNGPipes.unique_id[i:i+1].squeeze(),
-        #         subset = MercNGPipes.loc[MercNGPipes.pipeline_id==MercNGPipes.pipeline_id[i:i+1].squeeze()]
-        #     ))
+        if not (ZIP):
+            descAdd = str(MercNGPipes.pipe_id[i:i+1].squeeze())+"-"+str(findPiece(
+                id=MercNGPipes.unique_id[i:i+1].squeeze(),
+                subset=MercNGPipes.loc[MercNGPipes.pipe_id == MercNGPipes.pipe_id[i:i+1].squeeze()]
+            ))
 
 
         # get image(s) within box
