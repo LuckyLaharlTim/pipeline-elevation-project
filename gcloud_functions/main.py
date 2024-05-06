@@ -64,12 +64,12 @@ def getGJN():
     # for normal use, and in gcloud function
     blob = storage.Client(
         project="pipeline-elevation-project").bucket(
-        "pipeline_data_bucket").blob("raw/pl_segments.geojson")
+        "pipeline_data_bucket").blob("raw/pipeline_segments.geojson")
     blob.download_to_filename(destFile)
     
 
 def findPiece(id, subset):
-    return list(subset[subset.unique_id==id].index)[0]
+    return list(subset[subset.unique_id == id].index)[0]
     
 
 @ff.http
