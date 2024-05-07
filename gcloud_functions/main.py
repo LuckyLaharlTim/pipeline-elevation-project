@@ -146,7 +146,7 @@ def main(request):
                                     description=f"{desc}_{descAdd}",  # put part of pipeline here too
                                     # ^ put desired name for the task & file in cloud storage
                                     bucket = "gee_image_exports",  # should be gee_image_exports
-                                    fileNamePrefix="USDA_aerials/",
+                                    fileNamePrefix=f"USDA_aerials/{desc}_{descAdd}",
                                     region=bbox,  # I wonder if filtering by box first works too
                                     #maxPixels=1500000000  
                                     )
@@ -168,7 +168,7 @@ def main(request):
                                 description=f"{desc}_{descAdd}",  # put part of pipeline here too
                                 # ^ put desired name for the task & file in cloud storage
                                 bucket = "gee_image_exports",  # should be gee_image_exports
-                                fileNamePrefix="SKYSAT_ortho/",
+                                fileNamePrefix=f"SKYSAT_ortho/{desc}_{descAdd}",
                                 region=bbox,  # I wonder if filtering by box first works too
                                 #maxPixels=1500000000  
                                 )
