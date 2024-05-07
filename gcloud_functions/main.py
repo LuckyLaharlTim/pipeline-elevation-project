@@ -102,7 +102,9 @@ def main(request):
 
     try:
         index = int(request.args.get("index"))-1
-        batch = 1000
+        batch = int(request.args.get("batch"))
+        if batch <= 0:
+            batch = 1000
         if index >= len(MercNGPipes):
             print("Index argument too large, returning last batch of images.")
             index = len(MercNGPipes)-batch
