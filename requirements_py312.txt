@@ -4,6 +4,7 @@ asttokens==2.4.1
 astunparse==1.6.3
 attrs==23.2.0
 blessings==1.7
+blinker==1.8.2
 bqplot==0.12.43
 branca==0.7.1
 cachetools==5.3.3
@@ -12,6 +13,7 @@ charset-normalizer==3.3.2
 click==8.1.7
 click-plugins==1.1.1
 cligj==0.7.2
+cloudevents==1.10.1
 colorama==0.4.6
 colour==0.1.5
 comm==0.2.2
@@ -19,14 +21,17 @@ contourpy==1.2.1
 cycler==0.12.1
 debugpy==1.8.1
 decorator==5.1.1
+deprecation==2.1.0
 earthengine-api==0.1.399
 ee==0.2
 eerepr==0.0.4
 executing==2.0.1
 fiona==1.9.6
+Flask==3.0.3
 flatbuffers==24.3.25
 folium==0.16.0
 fonttools==4.51.0
+functions-framework==3.5.0
 future==1.0.0
 gast==0.5.4
 geehydro==0.2.0
@@ -55,6 +60,7 @@ ipyleaflet==0.18.2
 ipython==8.23.0
 ipytree==0.2.2
 ipywidgets==8.1.2
+itsdangerous==2.2.0
 jedi==0.19.1
 Jinja2==3.1.3
 joblib==1.4.2
@@ -130,6 +136,7 @@ typing_extensions==4.11.0
 tzdata==2024.1
 uritemplate==4.1.1
 urllib3==2.2.1
+watchdog==4.0.0
 wcwidth==0.2.13
 Werkzeug==3.0.3
 wheel==0.43.0

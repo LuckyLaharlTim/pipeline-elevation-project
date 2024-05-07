@@ -10,8 +10,8 @@ from zipfile import ZipFile
 import functions_framework as ff
 
 DEBUG = True
-# get original zip folder over enhanced geojson
-ZIP = False
+
+
 
 ### other variables that might change based on environment
 zipPath = "./data/"
@@ -70,6 +70,18 @@ def getGJN():
 
 def findPiece(id, subset):
     return list(subset[subset.unique_id == id].index)[0]
+
+# only call in for loop with desc & descAdd defined
+def export(img,bbox,folder):
+    task = ee.batch.Export.image.toCloudStorage(img,
+                                    description=f"{desc}-{descAdd}",  # put part of pipeline here too
+                                    # ^ put desired name for the task & file in cloud storage
+                                    bucket = "gee_image_exports",  # should be gee_image_exports
+                                    fileNamePrefix=f"{folder}/{desc}-{descAdd}",
+                                    region=bbox,  # I wonder if filtering by box first works too
+                                    #maxPixels=1500000000  
+                                    )
+    task.start()
     
 
 @ff.http
@@ -84,6 +96,12 @@ def main(request):
 
     aerColl = ee.ImageCollection("USDA/NAIP/DOQQ")
     orthColl = ee.ImageCollection("SKYSAT/GEN-A/PUBLIC/ORTHO/RGB")    
+
+    # get original zip folder over enhanced geojson
+    try:
+        ZIP = bool(request.args.get("zip"))
+    except Exception:
+        ZIP = False
 
     if ZIP:
         getSHP()
@@ -142,15 +160,7 @@ def main(request):
         try:
             mapImg(aImg, lon, lat)
             # Export section
-            task = ee.batch.Export.image.toCloudStorage(aImg,
-                                    description=f"{desc}_{descAdd}",  # put part of pipeline here too
-                                    # ^ put desired name for the task & file in cloud storage
-                                    bucket = "gee_image_exports",  # should be gee_image_exports
-                                    fileNamePrefix=f"USDA_aerials/{desc}_{descAdd}",
-                                    region=bbox,  # I wonder if filtering by box first works too
-                                    #maxPixels=1500000000  
-                                    )
-            task.start()
+            export(aImg,bbox,"USDA_aerials")
             # to view proper map
             print(f"Aerial Ag {i}")
             retrievedPics += 1
@@ -164,15 +174,7 @@ def main(request):
         try:
             mapImg(oImg, lon, lat)
             # Export section
-            task = ee.batch.Export.image.toCloudStorage(oImg,
-                                description=f"{desc}_{descAdd}",  # put part of pipeline here too
-                                # ^ put desired name for the task & file in cloud storage
-                                bucket = "gee_image_exports",  # should be gee_image_exports
-                                fileNamePrefix=f"SKYSAT_ortho/{desc}_{descAdd}",
-                                region=bbox,  # I wonder if filtering by box first works too
-                                #maxPixels=1500000000  
-                                )
-            task.start()
+            export(oImg,bbox,"SKYSAT_ortho")
             # to view proper map
             print(f"Aerial Orthro {i}")
             retrievedPics += 1
