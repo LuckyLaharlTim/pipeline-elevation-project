@@ -124,7 +124,7 @@ def main(request):
         descAdd = ""
         '''UNCOMMENT ONCE PREPPED'''
         if not (ZIP):
-            descAdd = str(MercNGPipes.pipe_id[i:i+1].squeeze())+"-"+str(findPiece(
+            descAdd = str(MercNGPipes.pipe_id[i:i+1].squeeze())+"_"+str(findPiece(
                 id=MercNGPipes.unique_id[i:i+1].squeeze(),
                 subset=MercNGPipes.loc[MercNGPipes.pipe_id == MercNGPipes.pipe_id[i:i+1].squeeze()]
             ))
@@ -133,17 +133,20 @@ def main(request):
         # get image(s) within box
         aList = aerColl.select('R', 'G', 'B', 'N').filterDate(i_date, f_date).filterBounds(bbox)
         oList = orthColl.select('R', 'G', 'B').filterDate(i_date, f_date).filterBounds(bbox)
-        # need to check if list is empty
-        # use .filterBounds(tx) if later issues
+
+        # try:
+            # need to check if list is empty
+            # use .filterBounds(tx) if later issues
 
         aImg = ee.Image(aList.toList(100).get(1))
         try:
             mapImg(aImg, lon, lat)
             # Export section
             task = ee.batch.Export.image.toCloudStorage(aImg,
-                                    description=f"USDA_aerials/{desc}_{descAdd}",  # put part of pipeline here too
+                                    description=f"{desc}_{descAdd}",  # put part of pipeline here too
                                     # ^ put desired name for the task & file in cloud storage
                                     bucket = "gee_image_exports",  # should be gee_image_exports
+                                    fileNamePrefix="USDA_aerials/",
                                     region=bbox,  # I wonder if filtering by box first works too
                                     #maxPixels=1500000000  
                                     )
@@ -156,29 +159,33 @@ def main(request):
                 print(f"skipped agriculture pipe {i}")
             pass
 
+
         oImg = ee.Image(oList.toList(100).get(1))
         try:
             mapImg(oImg, lon, lat)
             # Export section
             task = ee.batch.Export.image.toCloudStorage(oImg,
-                                    description=f"SKYSAT_ortho/{desc}_{descAdd}",  # put part of pipeline here too
-                                    # ^ put desired name for the task & file in cloud storage
-                                    bucket = "gee_image_exports",  # should be gee_image_exports
-                                    region=bbox,  # I wonder if filtering by box first works too
-                                    #maxPixels=1500000000  
-                                    )
+                                description=f"{desc}_{descAdd}",  # put part of pipeline here too
+                                # ^ put desired name for the task & file in cloud storage
+                                bucket = "gee_image_exports",  # should be gee_image_exports
+                                fileNamePrefix="SKYSAT_ortho/",
+                                region=bbox,  # I wonder if filtering by box first works too
+                                #maxPixels=1500000000  
+                                )
             task.start()
             # to view proper map
             print(f"Aerial Orthro {i}")
             retrievedPics += 1
-            continue
+            # continue
         except:
             if DEBUG:
                 print(f"skipped ortho pipe {i}")
             pass
 
-    return f"Successfully retrieved {retrievedPics} images out of " + \
+    successes = f"Successfully retrieved {retrievedPics} images out of " + \
         f"{len(MercNGPipes)} total records."
+    print(successes)
+    return successes
 
 
 if __name__ == "__main__":
