@@ -18,11 +18,13 @@ This project aims to use satellite images in Google Earth Engine as input for a 
    1. *Consists of network including convolutional layers*
         - examples of architectures like U-Net [here](https://joshting.medium.com/satellite-imagery-segmentation-with-convolutional-neural-networks-f9254de3b907)
 4. **<ins>Fit completed model with 500+ sample dataset</ins>**
-5. **<ins>Output binary prediction & model test accuracy details as respective</ins>**...
+5. **<ins>Output convolutional model output & test accuracy details as respective</ins>**...
    1. enhanced shapefile
    2. auto-formatted documentation of model evaluation
+6. **<ins>Correspond pipeline record geometries to the model output to find ratios vegetation near pipeline</ins>**
+    1. Add ratio to shapefile and export to Gcloud Storage: `pipeline_data_bucket/processed/TX_NGPipe_enhanced.zip`
 
 ----------------------------
 
 Input: Zip Folder of pipline shapefile
-<br>Output: Zip folder of pipeline shapefile with added `Aboveground` column
+<br>Output: Zip folder of pipeline shapefile with added continuous `Stab_Veg` (Stabilizing Vegetation) column
